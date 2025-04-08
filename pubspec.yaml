@@ -1,0 +1,87 @@
+name: calm_mind
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0" # Adjust as needed for your project's Dart version
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_generative_ai: ^0.4.6
+  shared_preferences: ^2.2.2 # Check for possible later versions
+  table_calendar: ^3.0.9 # Latest as of now
+  fl_chart: ^0.66.0 # Latest as of now
+  cupertino_icons: ^1.0.8 # Check for possible later versions
+  video_player: ^2.8.2 # Check for possible later versions
+  youtube_player_flutter: ^8.1.2 # Latest as of now
+  audioplayers: ^5.2.1 # Check for possible later versions
+  just_audio: ^0.9.36 # Check for possible later versions
+  firebase_core: ^3.13.0
+  cloud_firestore: ^5.6.6
+  firebase_auth: ^5.5.2
+  url_launcher: ^6.3.1
+  http: ^1.3.0
+  flutter_dotenv: ^5.2.1
+  intl: ^0.20.2
+  image_picker: ^1.1.2
+  firebase_storage: ^12.4.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0 # Latest compatible with flutter 3.0.0 and above.
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - .env
+    - assets/images/test_bg.jpg
+    - assets/images/insight_bg.jpg
+    - assets/images/motivation_bg.jpg
+    - assets/images/sound_bg.jpg
+    - assets/images/adhd_test_bg.jpg
+    - assets/images/adhd_test_screen_bg.jpg
+    - assets/images/anxiety_test_bg.jpg
+    - assets/images/anxiety_test_screen_bg.jpg
+    - assets/images/depression_test_screen_bg.jpg
+    - assets/images/emotional_stability_test_bg.jpg
+    - assets/images/self_disclosure_test_bg.jpg
+    - assets/images/depression.jpg
+    - assets/images/mental_health.jpg
+    - assets/images/self_disclosure.jpg
+    - assets/images/sleep_habits.jpg
+    - assets/images/emotional_intelligence.jpg
+    - assets/images/anger.jpg
+    - assets/images/emotional_stability.jpg
+    - assets/images/social_anxiety.jpg
+    - assets/images/motivation1.jpg
+    - assets/images/motivation2.jpg
+    - assets/images/motivation3.jpg
+    - assets/images/motivation4.jpg
+    - assets/videos/anger.mp4
+    - assets/videos/mental_health.mp4
+    - assets/videos/emotional_stabilty.mp4
+    - assets/videos/depression.mp4
+    - assets/videos/Self_Disclosure_ Explained.mp4
+    - assets/videos/sleep_habits.mp4
+    - assets/videos/Social_Anxiety_Disorder.mp4
+    - assets/videos/Emotional_Intelligence.mp4
+    - assets/sound/flute.mp3
+    - assets/sound/krishna.mp3
+    - assets/sound/om.mp3
+    - assets/sound/ocean.mp3
+    - assets/sound/rain.mp3
+    - assets/sound/meditation.mp3
+    - assets/images/flute1.jpg
+    - assets/images/flute2.jpg
+    - assets/images/om.jpg
+    - assets/images/ocean.jpg
+    - assets/images/rain.jpg
+    - assets/images/meditation.jpg
+    - assets/images/background.jpg
+
+    
