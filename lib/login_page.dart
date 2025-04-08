@@ -161,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                             : const Text('Login', style: TextStyle(fontSize: 16, color: Colors.black)), // Black text
                       ),
                       TextButton(
-                        onPressed: () => Navigator.pushNamed(context, '/register'),
+                        onPressed: () => Navigator.pushNamed(context, '/registerPage'), // Changed '/register' to '/registerPage'
                         child: const Text("Don't have an account? Register", style: TextStyle(color: Colors.black)), // Black text
                       ),
                     ],
