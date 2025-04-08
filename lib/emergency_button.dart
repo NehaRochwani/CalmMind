@@ -13,11 +13,19 @@ class _EmergencyButtonState extends State<EmergencyButton> {
   final String message = "I need immediate help! Please respond ASAP.";
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  bool _isMounted = false; // Track if the widget is mounted
 
   @override
   void initState() {
     super.initState();
+    _isMounted = true; // Set to true when the widget is created
     _loadEmergencyNumber();
+  }
+
+  @override
+  void dispose() {
+    _isMounted = false; // Set to false when the widget is disposed
+    super.dispose();
   }
 
   Future<void> _loadEmergencyNumber() async {
@@ -31,13 +39,15 @@ class _EmergencyButtonState extends State<EmergencyButton> {
 
         print("Snapshot exists: ${snapshot.exists}"); // Debug print
 
-        if (snapshot.exists) {
+        if (snapshot.exists && _isMounted) {
           setState(() {
             phoneNumber = snapshot['emergencyNumber'] ?? "";
             print("Emergency Number fetched: $phoneNumber"); // Debug print
           });
-        } else {
+        } else if (!snapshot.exists) {
           print("Document does not exist for user: ${user.uid}"); // Debug print
+        } else {
+          print("Widget was disposed before setState could be called."); // Debug print
         }
       } catch (e) {
         print("Error loading emergency number: $e"); // Debug print
