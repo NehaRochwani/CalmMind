@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'calmmind-13b33.firebasestorage.app',
     measurementId: 'G-41FJX2QPYQ',
   );
+
 }

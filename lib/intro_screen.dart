@@ -8,6 +8,7 @@ import 'weekly_mood_screen.dart';
 import 'emergency_button.dart';
 import 'ai_chat_screen.dart';
 import 'profile_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -21,6 +22,7 @@ class _IntroScreenState extends State<IntroScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   int _currentIndex = 0;
+  final FirebaseAuth _auth = FirebaseAuth.instance; // Instance of FirebaseAuth
 
   @override
   void initState() {
@@ -47,6 +49,17 @@ class _IntroScreenState extends State<IntroScreen>
     prefs.setString(today, mood);
   }
 
+  Future<void> _logout() async {
+    try {
+      await _auth.signOut();
+      // Navigate to your login screen after logout
+      Navigator.pushReplacementNamed(context, '/login'); // Replace '/login' with your actual login route
+    } catch (e) {
+      print("Error logging out: $e");
+      // Handle logout error (e.g., show a snackbar)
+    }
+  }
+
   void _onNavTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -57,7 +70,7 @@ class _IntroScreenState extends State<IntroScreen>
         context,
         MaterialPageRoute(builder: (context) => AIChatScreen()),
       );
-    } else if (index == 0) { // Add this condition
+    } else if (index == 0) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -122,6 +135,11 @@ class _IntroScreenState extends State<IntroScreen>
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => AIChatScreen()));
               },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.redAccent),
+              title: const Text('Logout'),
+              onTap: _logout,
             ),
           ],
         ),
@@ -194,6 +212,22 @@ class _IntroScreenState extends State<IntroScreen>
                       const SizedBox(height: 20),
                       moodButton("Weekly Mood", WeeklyMoodScreen(), Colors.blueAccent),
                       const SizedBox(height: 30),
+                      // Logout Button added here
+                      ElevatedButton.icon(
+                        onPressed: _logout,
+                        icon: const Icon(Icons.logout),
+                        label: const Text("Logout"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.redAccent,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          elevation: 5,
+                        ),
+                      ),
+                      const SizedBox(height: 30), // Add some spacing below the button
                     ],
                   ),
                 ),

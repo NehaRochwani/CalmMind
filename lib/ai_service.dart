@@ -1,28 +1,26 @@
-import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class GeminiService {
-  late GenerativeModel _model;
-
-  GeminiService() {
-    final apiKey = dotenv.env['GOOGLE_API_KEY'];
-    if (apiKey == null) {
-      print("Error: Google API key not found in .env file.");
-      // Handle the error appropriately
-    }
-    _model = GenerativeModel(
-      model: 'gemini-1.5-flash', // Updated to gemini-1.5-flash
-      apiKey: apiKey!,
-    );
-  }
+  final String _cloudFunctionUrl = 'YOUR_PYTHON_CLOUD_FUNCTION_URL'; // Replace with your actual URL
 
   Future<String> getChatResponse(String message) async {
     try {
-      final content = [Content.text(message)];
-      final response = await _model.generateContent(content);
-      return response.text ?? 'No response from Gemini.';
-    } catch (e, stackTrace) {
-      print('Gemini error: $e, StackTrace: $stackTrace');
+      final response = await http.post(
+        Uri.parse(_cloudFunctionUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'message': message}),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData['response'] ?? 'No response from Gemini.';
+      } else {
+        print('Error from Cloud Function: ${response.statusCode}, ${response.body}');
+        return 'Error generating response.';
+      }
+    } catch (e) {
+      print('Error communicating with Cloud Function: $e');
       return 'Error generating response.';
     }
   }

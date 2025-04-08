@@ -11,9 +11,9 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   bool _isLoading = false;
   String _errorMessage = '';
   bool _isPasswordVisible = false;
@@ -27,34 +27,46 @@ class _RegisterPageState extends State<RegisterPage> {
       });
 
       try {
+        print('Registering with email: ${_emailController.text.trim()}, password: ${_passwordController.text.trim()}'); // Print before auth call
         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
 
-        String uid = userCredential.user!.uid;
+        print('User created with UID: ${userCredential.user?.uid}'); // Print UID after successful auth
 
-        await FirebaseFirestore.instance.collection('users').doc(uid).set({
-          'uid': uid,
-          'email': _emailController.text.trim(),
-          'createdAt': DateTime.now(),
-        });
+        final String? uid = userCredential.user?.uid; // Use nullable type and ?. operator
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => IntroScreen()),
-        );
+        if (uid != null) {
+          await FirebaseFirestore.instance.collection('users').doc(uid).set({
+            'uid': uid,
+            'email': _emailController.text.trim(),
+            'createdAt': DateTime.now(),
+          });
+          print('User data written to Firestore');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => IntroScreen()),
+          );
+        } else {
+          setState(() {
+            _isLoading = false;
+            _errorMessage = 'Failed to retrieve user ID after registration.';
+          });
+          print('Error: User ID is null after registration.');
+        }
       } on FirebaseAuthException catch (e) {
         setState(() {
           _isLoading = false;
           _errorMessage = e.message ?? 'An error occurred during registration.';
         });
+        print('FirebaseAuthException: $e');
       } catch (e) {
         setState(() {
           _isLoading = false;
           _errorMessage = 'An unexpected error occurred.';
         });
-        print(e);
+        print('Unexpected error during registration: $e');
       }
     }
   }
